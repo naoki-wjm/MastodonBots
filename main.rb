@@ -18,16 +18,16 @@ client.fetch_mentions.each do |mention|
         skys = Skyoracle.new.oracle_sky
         result = skys.map { |sky| "【#{sky[:name]}】#{sky[:description]}" }.join("\n")
         "今日はこんな空模様です。\n\n#{result}\n\n良い一日をお過ごしください。"
-    when 'タロット'
-        # tarot.rbの処理呼び出し
-        cards = Tarot.new.read_cards
-        result = cards.map { |card| "【#{card[:name]}】#{card[:description]}" }.join("\n")
-        "タロット占いの結果はこちらです。\n\n#{result}"
     when '3タロット'||'３タロット'||'タロット3枚'||'タロット３枚'
         # tarot.rbの処理呼び出し
         cards = Tarot.new.three_cards
         result = cards.map { |card| "【#{card[:name]}】#{card[:description]}" }.join("\n")
         "タロットを3枚引いた結果はこちらです。\n\n#{result}"
+    when 'タロット'
+        # tarot.rbの処理呼び出し
+        cards = Tarot.new.read_cards
+        result = cards.map { |card| "【#{card[:name]}】#{card[:description]}" }.join("\n")
+        "タロット占いの結果はこちらです。\n\n#{result}"
     end
   end.join("\n")
 
