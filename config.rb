@@ -1,0 +1,5 @@
+require 'dotenv'
+Dotenv.load
+
+BASE_URL = ENV['MASTODON_BASE_URL']
+ACCESS_TOKEN = ENV['MASTODON_ACCESS_TOKEN']

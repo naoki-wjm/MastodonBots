@@ -1,13 +1,14 @@
+require_relative 'config'
 require_relative 'tooting'
 require_relative 'skyoracle'
 require_relative 'tarot'
 
 # クライアントの作成
-client = Tooting.new(base_url, access_token)
+client = Tooting.new(BASE_URL, ACCESS_TOKEN)
 
 # メンションの処理
 client.check_mentions.each do |mention|
-  content = mention.status.content.gsub(/<[^>]*>/, '') # HTMLタグの除去
+  content = mention['status']['content'].gsub(/<\/?[^>]+>/, '') # タグ除去
   words = content.split
 
   # キーワード検出と応答作成
@@ -32,5 +33,6 @@ client.check_mentions.each do |mention|
   end.join("\n")
 
   # 応答を投稿
-  client.post_status("@#{mention.account.acct} \n#{response}")
+  user = mention['account']['acct']
+  client.post_status("@#{user} \n#{response}")
 end
