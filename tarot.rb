@@ -1,6 +1,6 @@
 require 'securerandom' # カードの確率を決めるのに必要
 
-class Talot
+class Tarot
   CARDS = [
     { name: '愚者', description: '無邪気に冒険に出る様は、新たな風を呼ぶのか、ただの無計画なのか。' },
     { name: '魔術師', description: '自分の能力で頑張りたいようだが、果たして自信のほどは。' },
