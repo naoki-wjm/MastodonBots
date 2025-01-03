@@ -49,25 +49,25 @@ def check_mentions
       puts "予期せぬエラー: #{e.message}"
       []
     end
-end
-
-
-# 投稿を作成する関数
-def post_status(content)
-  uri = URI.parse("#{@base_url}/api/v1/statuses")
-  request = Net::HTTP::Post.new(uri)
-  request["Authorization"] = "Bearer #{@access_token}"
-  request["Content-Type"] = "application/json"
-
-  # 投稿内容をJSON形式で準備
-  request.body = {
-    status: content
-  }.to_json
-
-  response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
-    http.request(request)
   end
 
-  JSON.parse(response.body)
-end
+
+  def post_status(content, in_reply_to_id = nil)
+    uri = URI.parse("#{@base_url}/api/v1/statuses")
+    request = Net::HTTP::Post.new(uri)
+    request["Authorization"] = "Bearer #{@access_token}"
+    request["Content-Type"] = "application/json"
+
+    # 投稿内容をJSON形式で準備
+    payload = { status: content }
+    payload[:in_reply_to_id] = in_reply_to_id if in_reply_to_id # 返信先 ID を追加
+
+    request.body = payload.to_json
+
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
+      http.request(request)
+    end
+
+    JSON.parse(response.body)
+  end
 end
