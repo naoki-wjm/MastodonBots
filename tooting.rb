@@ -3,7 +3,6 @@ require 'uri'
 require 'json'
 
 
-
 class Tooting
   def initialize(base_url, access_token) # 引数で環境変数を受け取る
     @base_url = base_url
@@ -38,7 +37,6 @@ def check_mentions
         content = mention['status']['content'].gsub(/<\/?[^>]+>/, '') # タグ除去
         user = mention['account']['acct']
 
-        puts "@#{user}: #{content}"
       end
   
       mentions # メンションのリストを返す
@@ -60,7 +58,7 @@ def check_mentions
 
     # 投稿内容をJSON形式で準備
     payload = { status: content }
-    payload[:in_reply_to_id] = in_reply_to_id if in_reply_to_id # 返信先 ID を追加
+    payload[:in_reply_to_id] = in_reply_to_id if in_reply_to_id
 
     request.body = payload.to_json
 
