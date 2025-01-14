@@ -1,6 +1,7 @@
 require_relative 'config'
 require_relative 'tooting'
 require_relative 'skyoracle'
+require_relative 'enigmaoracle'
 require_relative 'tarot'
 require 'json'
 
@@ -33,10 +34,21 @@ client.check_mentions.each do |mention|
 
     # キーワード応答
     response = []
-    if content.match?(/空オラクル/)
+    if content.match?(/空オラクル|空模様/)
       skys = Sky.new.oracle_sky
       result = skys.map { |sky| "【#{sky[:name]}】#{sky[:description]}" }.join("\n")
-      response << "今日はこんな空模様です。\n\n#{result}\n\n良い一日をお過ごしください。"
+      response << "今はこんな空模様です。\n\n#{result}"
+    end
+
+    if content.match?(/エニグマ.*3枚|3エニグマ|３エニグマ/)
+      enigmas = Enigma.new.three_enigmas
+      result = enigmas.map { |enigma| "【#{enigma[:name]}】#{enigma[:meaning]}" }.join("\n")
+      response << "エニグマオラクルを3枚引いた結果はこちらです。\n\n#{result}"
+
+    elsif content.match?(/エニグマ/)
+      enigmas = Enigma.new.read_enigmas
+      result = enigmas.map { |enigma| "【#{enigma[:name]}】#{enigma[:meaning]}" }.join("\n")
+      response << "今回引いたエニグマオラクルはこちらです。\n\n#{result}"
     end
 
     if content.match?(/タロット.*3枚|3タロット|３タロット/)
@@ -45,9 +57,9 @@ client.check_mentions.each do |mention|
       response << "タロットを3枚引いた結果はこちらです。\n\n#{result}"
 
     elsif content.match?(/タロット/)
-        cards = Tarot.new.read_cards
-        result = cards.map { |card| "【#{card[:name]}】#{card[:description]}" }.join("\n")
-        response << "タロット占いの結果はこちらです。\n\n#{result}"
+      cards = Tarot.new.read_cards
+      result = cards.map { |card| "【#{card[:name]}】#{card[:description]}" }.join("\n")
+      response << "タロット占いの結果はこちらです。\n\n#{result}"
     end
 
     # 応答の投稿
